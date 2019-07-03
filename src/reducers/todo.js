@@ -9,9 +9,11 @@ const initialState = {
 function todo(state = initialState, action) {
   switch (action.type) {
     case 'MANAGE_TODO':
-      const todoList = state.todoList;
-      todoList[action.index].done = !todoList[action.index].done;
-      return { ...state, todoList };
+      const todos = state.todoList;
+      todos[action.index].done = !todos[action.index].done;
+      return { ...state, todos };
+    case 'ADD_TODO':
+      return { ...state, todoList: [...state.todoList, { name: action.name, done: false }] };
     default:
       return state;
   }

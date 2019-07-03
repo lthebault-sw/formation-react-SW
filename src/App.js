@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Task from './Task';
-import { manageTodo } from './actions';
+import { manageTodo, addTodo } from './actions';
 import { connect } from 'react-redux';
 
 const mapStateToProps = state => ({
@@ -9,19 +9,31 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  manageTodo: index => dispatch(manageTodo(index))
+  manageTodo: index => dispatch(manageTodo(index)),
+  addTodo: name => dispatch(addTodo(name))
 });
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.handleCheckTask = this.handleCheckTask.bind(this);
+    this.state = {
+      todoName: ''
+    };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleAddTodo = this.handleAddTodo.bind(this);
   }
 
-  handleCheckTask(index) {
+  handleChange(e) {
     return e => {
-      this.props.manageTodo(index);
+      this.setState({ todoName: e.target.value }, () => console.log(this.state));
     };
+  }
+
+  handleAddTodo() {
+    if (this.state.todoName !== '') {
+      this.props.addTodo(this.state.todoName);
+      this.setState({ todoName: '' });
+    }
   }
 
   render() {
@@ -31,10 +43,12 @@ class App extends Component {
         <table style={{ margin: 'auto' }}>
           <tbody>
             {this.props.todo.todoList.map((task, index) => (
-              <Task key={index} task={task} handleCheck={this.handleCheckTask(index)} />
+              <Task key={index} task={task} handleCheck={() => this.props.manageTodo(index)} />
             ))}
           </tbody>
         </table>
+        <input type="text" value={this.state.todoName} onChange={this.handleChange()} />
+        <button onClick={() => this.handleAddTodo()}>Add todo</button>
       </div>
     );
   }
