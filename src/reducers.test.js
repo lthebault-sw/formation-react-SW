@@ -1,6 +1,6 @@
-import reducers from '../../reducers';
+import reducers from './reducers';
 
-test('MANAGE_TODO', () => {
+test('reducers', () => {
   let state;
   state = reducers(
     {
@@ -9,25 +9,20 @@ test('MANAGE_TODO', () => {
           { name: 'Learn React', done: false },
           { name: 'Learn CSS', done: true },
           { name: 'Web development', done: true }
-        ],
-        todos: [
-          { name: 'Learn React', done: false },
-          { name: 'Learn CSS', done: true },
-          { name: 'Web development', done: true }
         ]
       }
     },
-    { type: 'MANAGE_TODO', index: 3 }
+    { type: 'MANAGE_TODO', index: 0 }
   );
   expect(state).toEqual({
     todo: {
       todoList: [
-        { name: 'Learn React', done: false },
+        { name: 'Learn React', done: true },
         { name: 'Learn CSS', done: true },
         { name: 'Web development', done: true }
       ],
       todos: [
-        { name: 'Learn React', done: false },
+        { name: 'Learn React', done: true },
         { name: 'Learn CSS', done: true },
         { name: 'Web development', done: true }
       ]
