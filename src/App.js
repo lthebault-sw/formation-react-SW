@@ -1,26 +1,26 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import Task from './Task';
+import { manageTodo } from './actions';
+import { connect } from 'react-redux';
 
-const tasks = [
-  { name: 'Learn React', done: false },
-  { name: 'Learn CSS', done: true },
-  { name: 'Web development', done: true }
-];
+const mapStateToProps = state => ({
+  todo: state.todo
+});
+
+const mapDispatchToProps = dispatch => ({
+  manageTodo: index => dispatch(manageTodo(index))
+});
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { tasks };
     this.handleCheckTask = this.handleCheckTask.bind(this);
   }
 
-  handleCheckTask(task, index) {
+  handleCheckTask(index) {
     return e => {
-      const newState = this.state;
-      newState.tasks[index].done = !task.done;
-      this.setState(newState);
+      this.props.manageTodo(index);
     };
   }
 
@@ -30,8 +30,8 @@ class App extends Component {
         <h1>TODO LIST</h1>
         <table style={{ margin: 'auto' }}>
           <tbody>
-            {tasks.map((task, index) => (
-              <Task key={index} task={task} handleCheck={this.handleCheckTask(task, index)} />
+            {this.props.todo.todoList.map((task, index) => (
+              <Task key={index} task={task} handleCheck={this.handleCheckTask(index)} />
             ))}
           </tbody>
         </table>
@@ -40,4 +40,7 @@ class App extends Component {
   }
 }
 
-export default App;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);
